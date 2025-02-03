@@ -1,24 +1,15 @@
 # README
+Quick implementation for prompt to view table of contents from JSON response, and offer content through dynamically created links snagged out of the JSON Table of Contents data.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Quick Set-up
+clone me
 
-Things you may want to cover:
+```
+bundle install
+rails server
+```
 
-* Ruby version
+visit `http://127.0.0.1:3000/books/35880/toc`
 
-* System dependencies
+click around
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
