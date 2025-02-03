@@ -1,0 +1,65 @@
+<style>
+  .table-of-contents {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .front-matter, .chapters {
+    margin-bottom: 20px;
+  }
+  .front-matter h2, .chapters h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+  }
+  .chapter {
+    margin-bottom: 15px;
+  }
+  .chapter h3 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .chapter ul {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+  .chapter ul li {
+    margin-bottom: 5px;
+  }
+  .chapter ul li a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+  .chapter ul li a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="table-of-contents">
+  <% # First, render front matter %>
+  <div class="front-matter">
+    <h2>Front Matter</h2>
+    <% toc.select { |item| item['type'] == 'front_matter' }.each do |front_matter| %>
+      <%= link_to front_matter['title'], book_section_path(book_id, element_id: front_matter['element_id']) %>
+    <% end %>
+  </div>
+
+  <div class="chapters">
+    <h2>Chapters</h2>
+    <% toc.select { |item| item['type'] == 'chapter' }.each do |chapter| %>
+      <div class="chapter">
+        <h3>
+          <%= chapter['ordinal'] %>. <%= chapter['title'] %>
+        </h3>
+        <ul>
+          <% chapter['sections'].each do |section| %>
+            <li>
+              <%= link_to "#{section['ordinal']} #{section['title']}", 
+                          book_section_path(book_id, element_id: section['element_id']) %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</div>

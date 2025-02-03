@@ -1,0 +1,67 @@
+<!--cheeky attempt at rendering content page in an iframe?-->
+<!--<div class="section-container">-->
+<!--  <iframe -->
+<!--    src="<%= @preview_url %>"-->
+<!--    width="100%"-->
+<!--    height="800px"-->
+<!--    frameborder="0"-->
+<!--  ></iframe>-->
+<!--</div>-->
+<style>
+  .book-section {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  .section-title {
+    font-size: 1.5em;
+    color: #333;
+    border-bottom: 2px solid #666;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+  .section-content p {
+    margin-bottom: 15px;
+  }
+  .section-list {
+    margin-left: 20px;
+    list-style-type: decimal;
+  }
+  .keyterm {
+    font-weight: bold;
+    color: #0066cc;
+    cursor: help;
+  }
+</style>
+
+<div class="book-section">
+  <h1 class="section-title">
+    <%= @section_data['title']['prefix'] %> <%= @section_data['title']['content'] %>
+  </h1>
+
+  <div class="section-content">
+    <% @section_data['children'].each do |child| %>
+      <% 
+         # Some Rails magic allows internal book links from the api to be transformed and useable for free:
+         # 1. Original link: href="shapiro_1-31669_2019-06-17_217fb65f2c"
+         # 2. Becomes: /books/35880/section/shapiro_1-31669_2019-06-17_217fb65f2c
+      %>
+      <% case child['type'] %>
+      <% when 'Paragraph' %>
+        <p>
+          <%= sanitize child['content'], tags: %w(span i a), attributes: %w(class href tabindex data-definition aria-expanded data-term id) %>
+        </p>
+      <% when 'List' %>
+        <ol class="section-list">
+          <% child['items'].each do |item| %>
+            <li>
+              <%= sanitize item['content'], tags: %w(p span a), attributes: %w(class href id) %>
+            </li>
+          <% end %>
+        </ol>
+      <% end %>
+    <% end %>
+  </div>
+</div>
